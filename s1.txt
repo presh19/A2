@@ -1,0 +1,160 @@
+Enter password: ********
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 9
+Server version: 8.0.30 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2022, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> create lab6;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'lab6' at line 1
+mysql> ^C
+mysql> create database lab6;
+Query OK, 1 row affected (0.21 sec)
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| aditya             |
+| book_db            |
+| booka1db           |
+| bookdb             |
+| company            |
+| companyy           |
+| dbms2              |
+| dept_emp           |
+| employee_inform    |
+| eval               |
+| evaluation         |
+| information_schema |
+| lab6               |
+| mysql              |
+| performance_schema |
+| sakila             |
+| sys                |
+| world              |
++--------------------+
+18 rows in set (0.18 sec)
+
+mysql> use lab6;
+Database changed
+mysql> create table location (location_id int primary key,street_id varchar(20),postal_code int,state_province varchar(20),country_id int);
+Query OK, 0 rows affected (1.07 sec)
+
+mysql> create table department (department_id int primary key, department_name varchar(20),manager_id int,location_id int ,foreign key(location_id)references location(location_id));
+Query OK, 0 rows affected (0.50 sec)
+
+mysql> create table employee(employee_id int primary key,first_name varchar(20),last_name varchar(20), email varchar(40), phone varchar(10),hire_date date,job_id int,salary int,commission_pct int,manager_id int,department_id int,foreign key(department_id) references department(department_id));
+Query OK, 0 rows affected (0.92 sec)
+
+mysql> insert location values(1,'santnagar',411047,'maharastra',8);
+Query OK, 1 row affected (1.31 sec)
+
+mysql> insert location values(2,'vimannagar',411032,'maharastra',9);
+Query OK, 1 row affected (0.04 sec)
+
+mysql> insert location values(3,'dhanori',411034,'maharastra',5);
+Query OK, 1 row affected (0.05 sec)
+
+mysql> describe department;
++-----------------+-------------+------+-----+---------+-------+
+| Field           | Type        | Null | Key | Default | Extra |
++-----------------+-------------+------+-----+---------+-------+
+| department_id   | int         | NO   | PRI | NULL    |       |
+| department_name | varchar(20) | YES  |     | NULL    |       |
+| manager_id      | int         | YES  |     | NULL    |       |
+| location_id     | int         | YES  | MUL | NULL    |       |
++-----------------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> insert into department values(100,'rmd',1,3);
+Query OK, 1 row affected (0.05 sec)
+
+mysql> insert into department values(200,'sales',2,1);
+Query OK, 1 row affected (0.08 sec)
+
+mysql> insert into department values(400,'accounts',4,1);
+Query OK, 1 row affected (0.06 sec)
+
+mysql>  describe employee;
++----------------+-------------+------+-----+---------+-------+
+| Field          | Type        | Null | Key | Default | Extra |
++----------------+-------------+------+-----+---------+-------+
+| employee_id    | int         | NO   | PRI | NULL    |       |
+| first_name     | varchar(20) | YES  |     | NULL    |       |
+| last_name      | varchar(20) | YES  |     | NULL    |       |
+| email          | varchar(40) | YES  |     | NULL    |       |
+| phone          | varchar(10) | YES  |     | NULL    |       |
+| hire_date      | date        | YES  |     | NULL    |       |
+| job_id         | int         | YES  |     | NULL    |       |
+| salary         | int         | YES  |     | NULL    |       |
+| commission_pct | int         | YES  |     | NULL    |       |
+| manager_id     | int         | YES  |     | NULL    |       |
+| department_id  | int         | YES  | MUL | NULL    |       |
++----------------+-------------+------+-----+---------+-------+
+11 rows in set (0.00 sec)
+
+mysql> insert into employee values(134,'hero','pakoda','heroman12@gmail.com',9022367898,'2003-04-02',134,10000,50,2,100);
+Query OK, 1 row affected (0.07 sec)
+
+mysql> insert into employee values(134,'carla','smith','carla@gmail.com',9022367898,'2004-04-05',144,50000,50,2,200);
+ERROR 1062 (23000): Duplicate entry '134' for key 'employee.PRIMARY'
+mysql> insert into employee values(144,'carla','smith','carla@gmail.com',9022367898,'2004-04-05',144,50000,233,1,200);
+Query OK, 1 row affected (0.05 sec)
+
+mysql> insert into employee values(154,'jod','dddd','jod@gmail.com',9022364898,'2004-05-02',154,20000,120,3,400);
+Query OK, 1 row affected (0.07 sec)
+
+mysql> select* from employee;
++-------------+------------+-----------+---------------------+------------+------------+--------+--------+----------------+------------+---------------+
+| employee_id | first_name | last_name | email               | phone      | hire_date  | job_id | salary | commission_pct | manager_id | department_id |
++-------------+------------+-----------+---------------------+------------+------------+--------+--------+----------------+------------+---------------+
+|         134 | hero       | pakoda    | heroman12@gmail.com | 9022367898 | 2003-04-02 |    134 |  10000 |             50 |          2 |           100 |
+|         144 | carla      | smith     | carla@gmail.com     | 9022367898 | 2004-04-05 |    144 |  50000 |            233 |          1 |           200 |
+|         154 | jod        | dddd      | jod@gmail.com       | 9022364898 | 2004-05-02 |    154 |  20000 |            120 |          3 |           400 |
++-------------+------------+-----------+---------------------+------------+------------+--------+--------+----------------+------------+---------------+
+3 rows in set (0.00 sec)
+
+mysql> select* from location;
++-------------+------------+-------------+----------------+------------+
+| location_id | street_id  | postal_code | state_province | country_id |
++-------------+------------+-------------+----------------+------------+
+|           1 | santnagar  |      411047 | maharastra     |          8 |
+|           2 | vimannagar |      411032 | maharastra     |          9 |
+|           3 | dhanori    |      411034 | maharastra     |          5 |
++-------------+------------+-------------+----------------+------------+
+3 rows in set (0.00 sec)
+
+mysql> select* from department;
++---------------+-----------------+------------+-------------+
+| department_id | department_name | manager_id | location_id |
++---------------+-----------------+------------+-------------+
+|           100 | rmd             |          1 |           3 |
+|           200 | sales           |          2 |           1 |
+|           400 | accounts        |          4 |           1 |
++---------------+-----------------+------------+-------------+
+3 rows in set (0.00 sec)
+
+mysql> insert into employee values(134,'hero','pakoda','heroman12@gmail.com',9022367898,'2003-04-02',134,10000,50,2,100);
+ERROR 1062 (23000): Duplicate entry '134' for key 'employee.PRIMARY'
+mysql> SELECT*FROM employee  where employee_id IN(134,159,183);
++-------------+------------+-----------+---------------------+------------+------------+--------+--------+----------------+------------+---------------+
+| employee_id | first_name | last_name | email               | phone      | hire_date  | job_id | salary | commission_pct | manager_id | department_id |
++-------------+------------+-----------+---------------------+------------+------------+--------+--------+----------------+------------+---------------+
+|         134 | hero       | pakoda    | heroman12@gmail.com | 9022367898 | 2003-04-02 |    134 |  10000 |             50 |          2 |           100 |
++-------------+------------+-----------+---------------------+------------+------------+--------+--------+----------------+------------+---------------+
+1 row in set (0.00 sec)
+
+mysql> select*FROM employee where salary>=3000 AND salary<=3000;
+Empty set (0.02 sec)
+
+mysql> select*from employee where(SELECT manager_id
+    -> where manager_id>=100 and manager_id<=200);
+Empty set (0.02 sec)
+
